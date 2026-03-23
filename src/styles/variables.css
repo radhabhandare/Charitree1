@@ -1,0 +1,16 @@
+:root {
+  --primary-green: #2e7d32;
+  --hover-yellow: #ffb300;
+  --title-brown: #5d4037;
+  --text-light: #666666;
+  --background-cream: #f5efe8;
+  --card-white: #ffffff;
+  --border-light: #e8e0d5;
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 15px 35px rgba(104, 70, 44, 0.15);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --transition: all 0.3s ease;
+}

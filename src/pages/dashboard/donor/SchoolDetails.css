@@ -1,0 +1,202 @@
+.school-details {
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--background-cream);
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-green);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  color: var(--hover-yellow);
+  transform: translateX(-5px);
+}
+
+.school-details-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+}
+
+.school-details-card h1 {
+  color: var(--title-brown);
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+.school-location {
+  color: var(--text-light);
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.school-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-item label {
+  color: var(--text-light);
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.info-item span {
+  color: var(--title-brown);
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.school-description h3,
+.school-needs h3 {
+  color: var(--title-brown);
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.school-description p {
+  color: var(--text-light);
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.need-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--background-cream);
+  border-radius: var(--radius-sm);
+  margin-bottom: 10px;
+}
+
+.need-name {
+  color: var(--title-brown);
+  font-weight: 500;
+}
+
+.need-quantity {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.need-urgency {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.need-urgency.high {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.need-urgency.medium {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.need-urgency.low {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
+}
+
+.donate-btn, .message-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.donate-btn {
+  background: var(--primary-green);
+  color: white;
+  border: none;
+}
+
+.donate-btn:hover {
+  background: var(--hover-yellow);
+  color: var(--title-brown);
+  transform: translateY(-2px);
+}
+
+.message-btn {
+  background: transparent;
+  color: var(--primary-green);
+  border: 2px solid var(--primary-green);
+}
+
+.message-btn:hover {
+  background: var(--primary-green);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border-light);
+  border-top-color: var(--primary-green);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 50px auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 768px) {
+  .school-details {
+    padding: 20px;
+  }
+  
+  .school-details-card {
+    padding: 20px;
+  }
+  
+  .school-info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .need-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}

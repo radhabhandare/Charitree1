@@ -1,0 +1,418 @@
+.school-tracking-page {
+  padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #f5efe8;
+  min-height: 100vh;
+}
+
+/* Header */
+.tracking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: white;
+  padding: 20px 25px;
+  border-radius: 20px;
+  border: 1px solid #e8e0d5;
+}
+
+.tracking-header h1 {
+  color: #5d4037;
+  font-size: 28px;
+  margin: 0;
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #2e7d32;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  color: #ffb300;
+  transform: translateX(-5px);
+}
+
+/* Tracking Card */
+.tracking-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e8e0d5;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Donation Summary */
+.donation-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 20px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e8e0d5;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.donor-info h2 {
+  color: #5d4037;
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.donor-email {
+  color: #666;
+  font-size: 14px;
+}
+
+.donation-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.donation-meta div {
+  text-align: right;
+}
+
+.donation-meta label {
+  display: block;
+  color: #999;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.donation-meta span {
+  display: block;
+  color: #5d4037;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.donation-meta span.status {
+  color: #2e7d32;
+  text-transform: capitalize;
+}
+
+/* Timeline */
+.tracking-timeline {
+  margin-bottom: 30px;
+}
+
+.tracking-timeline h3 {
+  color: #5d4037;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.timeline-progress {
+  margin: 20px 0 30px;
+}
+
+.progress-track {
+  height: 4px;
+  background: #e8e0d5;
+  border-radius: 2px;
+  margin-bottom: 30px;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #2e7d32;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+.timeline-stages {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.timeline-stage {
+  text-align: center;
+  flex: 1;
+  min-width: 70px;
+}
+
+.stage-icon {
+  width: 40px;
+  height: 40px;
+  background: #f5efe8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 8px;
+  font-size: 20px;
+}
+
+.timeline-stage.completed .stage-icon {
+  background: #2e7d32;
+  color: white;
+}
+
+.timeline-stage.current .stage-icon {
+  background: #ffb300;
+  color: #5d4037;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.stage-name {
+  font-size: 11px;
+  color: #666;
+  text-transform: capitalize;
+  display: block;
+}
+
+.stage-date {
+  font-size: 9px;
+  color: #999;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Delivery Info */
+.delivery-info {
+  background: #f5efe8;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 25px;
+}
+
+.delivery-info h3 {
+  color: #5d4037;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.info-grid div label {
+  display: block;
+  color: #999;
+  font-size: 11px;
+  margin-bottom: 3px;
+}
+
+.info-grid div span {
+  color: #5d4037;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Items List */
+.items-list {
+  margin-bottom: 25px;
+}
+
+.items-list h3 {
+  color: #5d4037;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items-table th {
+  text-align: left;
+  padding: 10px;
+  background: #f5efe8;
+  color: #5d4037;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.items-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e8e0d5;
+  color: #666;
+}
+
+/* Status Update */
+.status-update {
+  margin-bottom: 25px;
+  padding: 20px;
+  background: #f5efe8;
+  border-radius: 16px;
+}
+
+.status-update h3 {
+  color: #5d4037;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.status-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.accept-btn,
+.processing-btn,
+.receive-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.accept-btn {
+  background: #2e7d32;
+  color: white;
+}
+
+.accept-btn:hover {
+  background: #ffb300;
+  color: #5d4037;
+  transform: translateY(-2px);
+}
+
+.processing-btn {
+  background: #2196f3;
+  color: white;
+}
+
+.processing-btn:hover {
+  background: #1976d2;
+  transform: translateY(-2px);
+}
+
+.receive-btn {
+  background: #ff9800;
+  color: white;
+}
+
+.receive-btn:hover {
+  background: #f57c00;
+  transform: translateY(-2px);
+}
+
+/* Tracking Actions */
+.tracking-actions {
+  padding-top: 20px;
+  border-top: 1px solid #e8e0d5;
+}
+
+.message-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 2px solid #2e7d32;
+  border-radius: 10px;
+  color: #2e7d32;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.message-btn:hover {
+  background: #2e7d32;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e8e0d5;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .school-tracking-page {
+    padding: 20px;
+  }
+
+  .tracking-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .donation-summary {
+    flex-direction: column;
+  }
+
+  .donation-meta {
+    width: 100%;
+  }
+
+  .donation-meta div {
+    text-align: left;
+  }
+
+  .timeline-stages {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .timeline-stage {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+  }
+
+  .stage-icon {
+    margin: 0;
+  }
+
+  .stage-date {
+    margin-left: auto;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-buttons {
+    flex-direction: column;
+  }
+
+  .status-buttons button {
+    width: 100%;
+  }
+
+  .items-table {
+    font-size: 13px;
+  }
+
+  .items-table th,
+  .items-table td {
+    padding: 8px;
+  }
+}

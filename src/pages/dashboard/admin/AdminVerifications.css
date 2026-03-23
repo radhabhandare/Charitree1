@@ -1,0 +1,503 @@
+.admin-verifications {
+  padding: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background: #f5efe8;
+  min-height: 100vh;
+}
+
+/* Header Section */
+.verifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 15px;
+  background: white;
+  padding: 20px 25px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e8e0d5;
+}
+
+.verifications-header h1 {
+  color: #5d4037;
+  font-size: 28px;
+  margin: 0;
+}
+
+.pending-count {
+  background: #ff9800;
+  color: white;
+  padding: 6px 18px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(255, 152, 0, 0.2);
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: #2e7d32;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.back-btn:hover {
+  color: #ffb300;
+  transform: translateX(-5px);
+}
+
+/* Verification Section */
+.verifications-section {
+  margin-bottom: 40px;
+}
+
+.verifications-section h2 {
+  color: #5d4037;
+  font-size: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e8e0d5;
+  font-weight: 600;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 60px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e8e0d5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+  font-size: 64px;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.empty-state h3 {
+  color: #5d4037;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.empty-state p {
+  color: #666;
+}
+
+/* Verification Grid */
+.verifications-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(550px, 1fr));
+  gap: 25px;
+}
+
+/* Verification Card */
+.verification-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e8e0d5;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.verification-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header */
+.card-header {
+  background: #f8f5f0;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.card-header h2 {
+  color: #5d4037;
+  font-size: 18px;
+  margin: 0;
+  font-weight: 600;
+}
+
+.pending-badge {
+  background: #fff3e0;
+  color: #f57c00;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* School Details Grid */
+.school-details {
+  padding: 20px;
+  border-bottom: 1px solid #e8e0d5;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  background: white;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.detail-row label {
+  color: #999;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-row span {
+  color: #5d4037;
+  font-size: 14px;
+  font-weight: 500;
+  word-break: break-word;
+}
+
+.detail-row span.capitalize {
+  text-transform: capitalize;
+}
+
+/* School Description */
+.school-description,
+.school-needs {
+  padding: 20px;
+  border-bottom: 1px solid #e8e0d5;
+  background: white;
+}
+
+.school-description h3,
+.school-needs h3 {
+  color: #5d4037;
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.school-description p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+/* Needs List */
+.needs-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.need-tag {
+  background: #f5efe8;
+  padding: 5px 14px;
+  border-radius: 30px;
+  font-size: 12px;
+  color: #5d4037;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.need-tag:hover {
+  background: #e8e0d5;
+  transform: scale(1.02);
+}
+
+/* Action Buttons */
+.action-buttons {
+  padding: 20px;
+  display: flex;
+  gap: 15px;
+  background: #f8f5f0;
+}
+
+.approve-btn,
+.reject-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 14px;
+  text-align: center;
+}
+
+.approve-btn {
+  background: #2e7d32;
+  color: white;
+  box-shadow: 0 2px 4px rgba(46, 125, 50, 0.2);
+}
+
+.approve-btn:hover {
+  background: #1b5e20;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(46, 125, 50, 0.3);
+}
+
+.reject-btn {
+  background: transparent;
+  color: #d32f2f;
+  border: 2px solid #d32f2f;
+}
+
+.reject-btn:hover {
+  background: #d32f2f;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal {
+  background: white;
+  border-radius: 24px;
+  padding: 30px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s ease;
+}
+
+.modal h3 {
+  color: #5d4037;
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.modal p {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.modal textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e8e0d5;
+  border-radius: 12px;
+  font-size: 14px;
+  margin-bottom: 25px;
+  resize: vertical;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: #fafafa;
+}
+
+.modal textarea:focus {
+  border-color: #2e7d32;
+  outline: none;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  font-size: 14px;
+}
+
+.modal-actions button:first-child {
+  background: transparent;
+  border: 2px solid #e8e0d5;
+  color: #666;
+}
+
+.modal-actions button:first-child:hover {
+  border-color: #2e7d32;
+  color: #2e7d32;
+  background: #f8f5f0;
+}
+
+.modal-actions button:last-child {
+  background: #d32f2f;
+  color: white;
+}
+
+.modal-actions button:last-child:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5efe8;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e8e0d5;
+  border-top-color: #2e7d32;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1200px) {
+  .verifications-grid {
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .admin-verifications {
+    padding: 20px;
+  }
+  
+  .verifications-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .verifications-header h1 {
+    font-size: 24px;
+  }
+  
+  .verifications-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .school-details {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .approve-btn,
+  .reject-btn {
+    padding: 12px;
+  }
+  
+  .modal {
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .modal h3 {
+    font-size: 20px;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .admin-verifications {
+    padding: 15px;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+  
+  .card-header h2 {
+    font-size: 16px;
+  }
+  
+  .pending-badge {
+    align-self: center;
+  }
+  
+  .detail-row span {
+    font-size: 13px;
+  }
+  
+  .empty-state {
+    padding: 40px 20px;
+  }
+  
+  .empty-state h3 {
+    font-size: 20px;
+  }
+}

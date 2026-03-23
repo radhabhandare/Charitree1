@@ -1,0 +1,368 @@
+/* Donation Tracking Styles */
+.donation-tracking {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--background-cream);
+}
+
+.tracking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.tracking-header h1 {
+  color: var(--title-brown);
+  font-size: 28px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 15px;
+}
+
+.share-btn, .help-btn {
+  padding: 10px 20px;
+  background: white;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.share-btn:hover, .help-btn:hover {
+  background: var(--background-cream);
+  transform: translateY(-2px);
+}
+
+.tracking-card {
+  background: white;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-light);
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+}
+
+.donation-summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid var(--border-light);
+}
+
+.school-info h2 {
+  color: var(--title-brown);
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+
+.school-location {
+  color: var(--text-light);
+  margin-bottom: 5px;
+}
+
+.school-address {
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+.donation-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.meta-item {
+  text-align: right;
+}
+
+.meta-label {
+  display: block;
+  color: var(--text-light);
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.meta-value {
+  display: block;
+  color: var(--title-brown);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.meta-value.status {
+  color: var(--primary-green);
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.tracking-timeline {
+  margin-bottom: 30px;
+}
+
+.tracking-timeline h3 {
+  color: var(--title-brown);
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.timeline-event {
+  position: relative;
+  padding-bottom: 25px;
+  display: flex;
+  gap: 20px;
+}
+
+.timeline-event::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 25px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border-light);
+}
+
+.timeline-event:last-child::before {
+  display: none;
+}
+
+.timeline-icon {
+  width: 40px;
+  height: 40px;
+  background: var(--background-cream);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  z-index: 1;
+  position: relative;
+}
+
+.timeline-content {
+  flex: 1;
+  background: var(--background-cream);
+  padding: 15px;
+  border-radius: var(--radius-md);
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.event-header h4 {
+  color: var(--title-brown);
+  font-size: 16px;
+  text-transform: capitalize;
+}
+
+.event-time {
+  color: var(--text-light);
+  font-size: 12px;
+}
+
+.event-description {
+  color: var(--text-light);
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.event-details {
+  display: flex;
+  gap: 15px;
+  font-size: 12px;
+  color: var(--text-light);
+}
+
+.event-extra {
+  margin-top: 8px;
+  color: var(--primary-green);
+  font-size: 12px;
+}
+
+.delivery-info {
+  background: var(--background-cream);
+  padding: 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 30px;
+}
+
+.delivery-info h3 {
+  color: var(--title-brown);
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-label {
+  color: var(--text-light);
+  font-size: 12px;
+  margin-bottom: 3px;
+}
+
+.info-value {
+  color: var(--title-brown);
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.tracking-number {
+  font-family: monospace;
+  background: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.track-courier-btn {
+  display: inline-block;
+  color: var(--primary-green);
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: var(--transition);
+}
+
+.track-courier-btn:hover {
+  color: var(--hover-yellow);
+  transform: translateX(5px);
+}
+
+.items-list {
+  margin-bottom: 30px;
+}
+
+.items-list h3 {
+  color: var(--title-brown);
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.items-table th {
+  text-align: left;
+  padding: 10px;
+  background: var(--background-cream);
+  color: var(--title-brown);
+  font-weight: 600;
+}
+
+.items-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border-light);
+  color: var(--text-light);
+}
+
+.tracking-actions {
+  display: flex;
+  gap: 15px;
+  padding-top: 20px;
+  border-top: 2px solid var(--border-light);
+}
+
+.message-school-btn, .report-issue-btn {
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.message-school-btn {
+  background: var(--primary-green);
+  color: white;
+  border: none;
+}
+
+.message-school-btn:hover {
+  background: var(--hover-yellow);
+  color: var(--title-brown);
+  transform: translateY(-2px);
+}
+
+.report-issue-btn {
+  background: transparent;
+  color: #d32f2f;
+  border: 2px solid #d32f2f;
+}
+
+.report-issue-btn:hover {
+  background: #d32f2f;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.back-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-green);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 8px 16px;
+  transition: var(--transition);
+}
+
+.back-btn:hover {
+  color: var(--hover-yellow);
+  transform: translateX(-5px);
+}
+
+@media screen and (max-width: 768px) {
+  .donation-tracking {
+    padding: 20px;
+  }
+  
+  .tracking-header {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .donation-summary {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .donation-meta {
+    width: 100%;
+  }
+  
+  .timeline-event {
+    flex-direction: column;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tracking-actions {
+    flex-direction: column;
+  }
+}
