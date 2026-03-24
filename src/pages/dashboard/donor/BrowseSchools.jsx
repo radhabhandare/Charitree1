@@ -26,10 +26,10 @@ const BrowseSchools = () => {
       const response = await api.get('/schools/verified', {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('✅ Verified schools fetched:', response.data);
       setSchools(response.data);
     } catch (error) {
       console.error('Error fetching schools:', error);
-      // Mock data for development
       setSchools([]);
     } finally {
       setLoading(false);
@@ -59,7 +59,7 @@ const BrowseSchools = () => {
   };
 
   const filteredSchools = schools.filter(school => {
-    if (filters.location && school.location !== filters.location) return false;
+    if (filters.location && school.address?.city !== filters.location) return false;
     if (filters.need) {
       const hasNeed = school.needs?.some(need => need.category === filters.need);
       if (!hasNeed) return false;
@@ -83,7 +83,7 @@ const BrowseSchools = () => {
   return (
     <div className="browse-schools">
       <div className="browse-header">
-        <h1>Browse Schools</h1>
+        <h1>Browse Verified Schools</h1>
         <button className="back-btn" onClick={() => navigate('/donor/dashboard')}>
           ← Back to Dashboard
         </button>
@@ -133,39 +133,46 @@ const BrowseSchools = () => {
         <div className="schools-grid">
           {filteredSchools.map(school => (
             <div 
-              key={school.id} 
+              key={school._id} 
               className="school-card"
-              onClick={() => navigate(`/school/${school.id}`)}
+              onClick={() => navigate(`/school/${school._id}`)}
             >
               <div className="school-card-body">
-                <h2>{school.name}</h2>
-                <p className="school-location">{school.location}</p>
+                <h2>{school.schoolName}</h2>
+                <p className="school-location">{school.address?.city}, {school.address?.state}</p>
                 
                 <div className="school-stats">
-                  <span>👥 {school.students} students</span>
-                  <span>🏫 {school.type}</span>
+                  <span>👥 {school.studentCount || 0} students</span>
+                  <span>🏫 {school.schoolType || 'School'}</span>
+                  {school.verificationStatus === 'verified' && (
+                    <span className="verified-tag">✓ Verified</span>
+                  )}
                 </div>
 
                 <div className="school-needs">
-                  <h3>Needs</h3>
-                  {school.needs?.filter(need => need.urgency === 'high').slice(0, 2).map(need => (
-                    <div key={need.id} className="need-item">
-                      <span className="need-name">{need.item}</span>
-                      <span className="need-quantity">Need: {need.quantity}</span>
-                      <span 
-                        className="need-urgency" 
-                        style={{ backgroundColor: getUrgencyColor(need.urgency) }}
-                      >
-                        {need.urgency}
-                      </span>
-                    </div>
-                  ))}
-                  {school.needs?.filter(need => need.urgency === 'high').length === 0 && (
+                  <h3>Current Needs</h3>
+                  {school.needs?.filter(need => need.urgency === 'high').length > 0 ? (
+                    school.needs.filter(need => need.urgency === 'high').slice(0, 3).map(need => (
+                      <div key={need._id} className="need-item">
+                        <span className="need-name">{need.item}</span>
+                        <span className="need-quantity">Need: {need.quantity}</span>
+                        <div className="progress-bar-small">
+                          <div 
+                            className="progress-fill-small" 
+                            style={{ width: `${(need.fulfilled / need.quantity) * 100}%` }}
+                          ></div>
+                        </div>
+                        <span className="need-urgency" style={{ backgroundColor: getUrgencyColor(need.urgency) }}>
+                          {need.urgency}
+                        </span>
+                      </div>
+                    ))
+                  ) : (
                     <p className="no-needs">No urgent needs at the moment</p>
                   )}
                 </div>
 
-                <button className="donate-btn">Donate Now</button>
+                <button className="donate-btn">View & Donate</button>
               </div>
             </div>
           ))}

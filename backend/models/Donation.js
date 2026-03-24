@@ -22,12 +22,22 @@ const donationSchema = new mongoose.Schema({
   items: [{
     name: { type: String, required: true },
     quantity: { type: Number, required: true, min: 1 },
-    category: { type: String }
+    category: { type: String },
+    price: { type: Number } // For e-commerce donations
   }],
   totalItems: {
     type: Number,
     required: true,
     default: 0
+  },
+  totalAmount: {
+    type: Number,
+    default: 0
+  },
+  donationMethod: {
+    type: String,
+    enum: ['ecommerce', 'courier', 'self_delivery'],
+    default: 'ecommerce'
   },
   status: {
     type: String,
@@ -41,6 +51,23 @@ const donationSchema = new mongoose.Schema({
   },
   courier: {
     type: String
+  },
+  courierReceipt: {
+    type: String
+  },
+  selfDeliveryDate: {
+    type: Date
+  },
+  selfDeliveryTime: {
+    type: String
+  },
+  deliveryNotes: {
+    type: String
+  },
+  deliveryProof: {
+    image: { type: String },
+    notes: { type: String },
+    uploadedAt: { type: Date }
   },
   estimatedDelivery: {
     type: Date

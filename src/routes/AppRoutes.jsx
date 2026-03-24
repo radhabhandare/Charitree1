@@ -23,6 +23,7 @@ import SchoolNeeds from "../pages/dashboard/school/SchoolNeeds";
 import SchoolDonations from "../pages/dashboard/school/SchoolDonations";
 import SchoolTracking from "../pages/dashboard/school/SchoolTracking";
 import SchoolMessages from "../pages/dashboard/school/SchoolMessages";
+import SchoolAnalytics from "../pages/dashboard/school/SchoolAnalytics";
 
 // Dashboard Pages - Donor
 import DonorDashboard from "../pages/dashboard/donor/DonorDashboard";
@@ -32,6 +33,10 @@ import DonationTracking from "../pages/dashboard/donor/DonationTracking";
 import BrowseSchools from "../pages/dashboard/donor/BrowseSchools";
 import SchoolDetails from "../pages/dashboard/donor/SchoolDetails";
 import DonorMessages from "../pages/dashboard/donor/DonorMessages";
+import DonationCart from "../pages/dashboard/donor/DonationCart";
+import DonorImpact from "../pages/dashboard/donor/DonorImpact";
+import DonorCampaigns from "../pages/dashboard/donor/DonorCampaigns";
+import CampaignDetails from "../pages/dashboard/donor/CampaignDetails";
 
 // Dashboard Pages - Campaign
 import CampaignDashboard from "../pages/dashboard/campaign/CampaignDashboard";
@@ -113,6 +118,11 @@ const AppRoutes = () => {
             <SchoolMessages />
           </ProtectedRoute>
         } />
+        <Route path="/school/analytics" element={
+          <ProtectedRoute allowedRoles={['school']}>
+            <SchoolAnalytics />
+          </ProtectedRoute>
+        } />
 
         {/* ========== Donor Routes ========== */}
         <Route path="/donor/dashboard" element={
@@ -153,6 +163,26 @@ const AppRoutes = () => {
         <Route path="/donor/messages/:schoolId" element={
           <ProtectedRoute allowedRoles={['donor']}>
             <DonorMessages />
+          </ProtectedRoute>
+        } />
+        <Route path="/donor/cart" element={
+          <ProtectedRoute allowedRoles={['donor']}>
+            <DonationCart />
+          </ProtectedRoute>
+        } />
+        <Route path="/donor/impact" element={
+          <ProtectedRoute allowedRoles={['donor']}>
+            <DonorImpact />
+          </ProtectedRoute>
+        } />
+        <Route path="/donor/campaigns" element={
+          <ProtectedRoute allowedRoles={['donor']}>
+            <DonorCampaigns />
+          </ProtectedRoute>
+        } />
+        <Route path="/donor/campaign/:campaignId" element={
+          <ProtectedRoute allowedRoles={['donor']}>
+            <CampaignDetails />
           </ProtectedRoute>
         } />
 

@@ -14,6 +14,8 @@ const donationRoutes = require('./routes/donationRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const donorRoutes = require('./routes/donorRoutes');
 const schoolRoutes = require('./routes/schoolRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
+const campaignRoutes = require('./routes/campaignRoutes');
 
 // Connect to MongoDB
 connectDB();
@@ -50,6 +52,8 @@ app.use('/api/donations', donationRoutes);
 app.use('/api/donor/messages', messageRoutes);
 app.use('/api/donor', donorRoutes);
 app.use('/api/schools', schoolRoutes);
+app.use('/api/notifications', notificationRoutes);
+app.use('/api/campaigns', campaignRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {

@@ -48,6 +48,10 @@ const donorSchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  impactScore: {
+    type: Number,
+    default: 0
+  },
   preferences: {
     emailNotifications: { type: Boolean, default: true },
     smsNotifications: { type: Boolean, default: false },

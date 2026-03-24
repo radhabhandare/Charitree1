@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import api from '../../../services/api';
+import NotificationToast from '../../../components/common/NotificationToast';
 import './SchoolDashboard.css';
 
 const SchoolDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
+  const [notifications, setNotifications] = useState([]);
+  const [showToast, setShowToast] = useState(false);
   const [dashboardData, setDashboardData] = useState({
     stats: {
       totalDonations: 0,
@@ -23,6 +26,7 @@ const SchoolDashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
+    fetchNotifications();
   }, []);
 
   const fetchDashboardData = async () => {
@@ -30,23 +34,30 @@ const SchoolDashboard = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      // Real API calls - these endpoints need to be created in backend
       const [statsRes, donationsRes, needsRes, messagesRes] = await Promise.all([
         api.get('/school/stats', { headers: { Authorization: `Bearer ${token}` } }),
         api.get('/school/donations/recent', { headers: { Authorization: `Bearer ${token}` } }),
-        api.get('/school/needs/pending', { headers: { Authorization: `Bearer ${token}` } }),
+        api.get('/school/needs', { headers: { Authorization: `Bearer ${token}` } }),
         api.get('/school/messages/recent', { headers: { Authorization: `Bearer ${token}` } })
       ]);
+
+      // Auto-update need urgency based on age
+      const needsWithAutoUrgency = needsRes.data.map(need => {
+        const daysOld = (new Date() - new Date(need.createdAt)) / (1000 * 60 * 60 * 24);
+        let urgency = need.urgency;
+        if (daysOld > 30 && urgency !== 'high') urgency = 'high';
+        else if (daysOld > 15 && urgency !== 'medium' && urgency !== 'high') urgency = 'medium';
+        return { ...need, urgency, autoUpdated: daysOld > 30 };
+      });
 
       setDashboardData({
         stats: statsRes.data,
         recentDonations: donationsRes.data,
-        pendingNeeds: needsRes.data,
+        pendingNeeds: needsWithAutoUrgency.filter(n => n.status === 'pending'),
         recentMessages: messagesRes.data
       });
     } catch (error) {
       console.error('Error fetching dashboard data:', error);
-      // Only use mock if API fails, but prefer real data
       setDashboardData({
         stats: {
           totalDonations: 0,
@@ -64,6 +75,33 @@ const SchoolDashboard = () => {
     }
   };
 
+  const fetchNotifications = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await api.get('/school/notifications', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setNotifications(response.data);
+      if (response.data.filter(n => !n.read).length > 0) {
+        setShowToast(true);
+      }
+    } catch (error) {
+      console.error('Error fetching notifications:', error);
+    }
+  };
+
+  const handleMarkNotificationRead = async (notificationId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await api.put(`/notifications/${notificationId}/read`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchNotifications();
+    } catch (error) {
+      console.error('Error marking notification read:', error);
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/login');
@@ -72,7 +110,8 @@ const SchoolDashboard = () => {
   const getStatusColor = (status) => {
     const colors = {
       'pending': '#ff9800',
-      'processing': '#2196f3',
+      'accepted': '#2196f3',
+      'processing': '#9c27b0',
       'shipped': '#1976d2',
       'delivered': '#2e7d32',
       'cancelled': '#d32f2f'
@@ -80,12 +119,16 @@ const SchoolDashboard = () => {
     return colors[status] || '#666';
   };
 
-  const getUrgencyBadge = (urgency) => {
+  const getUrgencyBadge = (urgency, autoUpdated) => {
     switch(urgency) {
-      case 'high': return <span className="urgency-high">🔴 High Priority</span>;
-      case 'medium': return <span className="urgency-medium">🟡 Medium Priority</span>;
-      case 'low': return <span className="urgency-low">🟢 Low Priority</span>;
-      default: return <span className="urgency-medium">🟡 Medium</span>;
+      case 'high': 
+        return <span className="urgency-high">🔴 High Priority {autoUpdated && <span className="auto-badge">(Auto)</span>}</span>;
+      case 'medium': 
+        return <span className="urgency-medium">🟡 Medium Priority</span>;
+      case 'low': 
+        return <span className="urgency-low">🟢 Low Priority</span>;
+      default: 
+        return <span className="urgency-medium">🟡 Medium</span>;
     }
   };
 
@@ -96,6 +139,12 @@ const SchoolDashboard = () => {
       month: 'short',
       year: 'numeric'
     });
+  };
+
+  // Calculate progress percentage for a need
+  const getProgressPercentage = (need) => {
+    if (!need.quantity) return 0;
+    return (need.fulfilled / need.quantity) * 100;
   };
 
   if (loading) {
@@ -119,6 +168,12 @@ const SchoolDashboard = () => {
           )}
         </div>
         <div className="header-right">
+          <button className="icon-btn" onClick={() => navigate('/school/notifications')}>
+            <span>🔔</span>
+            {notifications.filter(n => !n.read).length > 0 && (
+              <span className="badge">{notifications.filter(n => !n.read).length}</span>
+            )}
+          </button>
           <button className="icon-btn" onClick={() => navigate('/school/messages')}>
             <span>💬</span>
             {dashboardData.recentMessages.filter(m => !m.read).length > 0 && (
@@ -169,7 +224,7 @@ const SchoolDashboard = () => {
 
       {/* Quick Actions */}
       <div className="quick-actions">
-        <button className="action-btn primary" onClick={() => navigate('/school/needs/create')}>
+        <button className="action-btn primary" onClick={() => navigate('/school/needs')}>
           <span>➕</span> Post New Need
         </button>
         <button className="action-btn" onClick={() => navigate('/school/needs')}>
@@ -180,6 +235,9 @@ const SchoolDashboard = () => {
         </button>
         <button className="action-btn" onClick={() => navigate('/school/messages')}>
           <span>💬</span> Messages
+        </button>
+        <button className="action-btn" onClick={() => navigate('/school/analytics')}>
+          <span>📊</span> View Analytics
         </button>
       </div>
 
@@ -222,7 +280,7 @@ const SchoolDashboard = () => {
           </div>
         </div>
 
-        {/* Pending Needs */}
+        {/* Pending Needs with Progress Bar */}
         <div className="dashboard-card">
           <div className="card-header">
             <h2>Pending Needs</h2>
@@ -234,11 +292,21 @@ const SchoolDashboard = () => {
           <div className="needs-list">
             {dashboardData.pendingNeeds.length > 0 ? (
               dashboardData.pendingNeeds.map(need => (
-                <div key={need.id} className="need-item">
+                <div key={need._id || need.id} className="need-item">
                   <div className="need-info">
                     <h3>{need.item}</h3>
-                    <p className="need-quantity">Quantity: {need.quantity}</p>
-                    {getUrgencyBadge(need.urgency)}
+                    <p className="need-quantity">Required: {need.quantity} | Received: {need.fulfilled || 0}</p>
+                    {getUrgencyBadge(need.urgency, need.autoUpdated)}
+                    
+                    {/* Progress Bar */}
+                    <div className="progress-bar-container">
+                      <div 
+                        className="progress-fill-need"
+                        style={{ width: `${getProgressPercentage(need)}%` }}
+                      >
+                        <span className="progress-text">{Math.round(getProgressPercentage(need))}%</span>
+                      </div>
+                    </div>
                   </div>
                   <div className="need-status">
                     <span className="status-pending">Pending</span>
@@ -248,7 +316,7 @@ const SchoolDashboard = () => {
             ) : (
               <div className="empty-state">
                 <p>No pending needs.</p>
-                <button className="add-need-btn" onClick={() => navigate('/school/needs/create')}>
+                <button className="add-need-btn" onClick={() => navigate('/school/needs')}>
                   + Add New Need
                 </button>
               </div>
@@ -270,10 +338,10 @@ const SchoolDashboard = () => {
               dashboardData.recentMessages.map(message => (
                 <div key={message.id} className={`message-item ${!message.read ? 'unread' : ''}`}>
                   <div className="message-avatar">
-                    <span>👤</span>
+                    <span>{message.senderName?.charAt(0) || 'D'}</span>
                   </div>
                   <div className="message-info">
-                    <h4>{message.senderName}</h4>
+                    <h4>{message.senderName || 'Donor'}</h4>
                     <p>{message.message}</p>
                     <span className="message-time">{formatDate(message.time)}</span>
                   </div>
@@ -288,6 +356,15 @@ const SchoolDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Notification Toast */}
+      {showToast && (
+        <NotificationToast 
+          notifications={notifications.filter(n => !n.read)}
+          onClose={() => setShowToast(false)}
+          onMarkRead={handleMarkNotificationRead}
+        />
+      )}
     </div>
   );
 };

@@ -1,202 +1,591 @@
+/* School Details Page - Full Width with Center Alignment */
 .school-details {
   padding: 30px;
-  max-width: 900px;
-  margin: 0 auto;
+  width: 100%;
   min-height: 100vh;
-  background: var(--background-cream);
+  background: #f5efe8;
+  margin: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Back Button - Left Aligned on Center Container */
 .back-btn {
   background: transparent;
   border: none;
-  color: var(--primary-green);
+  color: #2e7d32;
   font-size: 16px;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 10px 20px;
   margin-bottom: 20px;
-  transition: var(--transition);
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  border-radius: 8px;
+  align-self: flex-start;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .back-btn:hover {
-  color: var(--hover-yellow);
+  color: #ffb300;
   transform: translateX(-5px);
+  background: rgba(46, 125, 50, 0.05);
 }
 
+/* Main Card - Centered */
 .school-details-card {
   background: white;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-  padding: 30px;
-  box-shadow: var(--shadow-sm);
+  border-radius: 24px;
+  border: 1px solid #e8e0d5;
+  padding: 35px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
-.school-details-card h1 {
-  color: var(--title-brown);
-  font-size: 28px;
-  margin-bottom: 5px;
+.school-details-card:hover {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* School Header */
+.school-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e8e0d5;
+  text-align: center;
+}
+
+.school-header h1 {
+  color: #5d4037;
+  font-size: 32px;
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .school-location {
-  color: var(--text-light);
-  margin-bottom: 25px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border-light);
+  color: #666;
+  font-size: 15px;
+  margin-bottom: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
 }
 
+.school-location::before {
+  content: "📍";
+  font-size: 14px;
+}
+
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.verified-badge::before {
+  content: "✓";
+  font-weight: bold;
+}
+
+/* School Info Grid - Centered Content */
 .school-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
-  margin-bottom: 25px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e8e0d5;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
+  gap: 5px;
+  text-align: center;
 }
 
 .info-item label {
-  color: var(--text-light);
+  color: #999;
   font-size: 12px;
-  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .info-item span {
-  color: var(--title-brown);
-  font-weight: 500;
+  color: #5d4037;
   font-size: 16px;
+  font-weight: 500;
 }
 
-.school-description h3,
-.school-needs h3 {
-  color: var(--title-brown);
-  margin-bottom: 10px;
-  font-size: 18px;
+/* School Description */
+.school-description {
+  margin-bottom: 30px;
+  padding-bottom: 25px;
+  border-bottom: 1px solid #e8e0d5;
+  text-align: center;
+}
+
+.school-description h3 {
+  color: #5d4037;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.school-description h3::before {
+  content: "📖";
+  font-size: 20px;
 }
 
 .school-description p {
-  color: var(--text-light);
-  line-height: 1.6;
-  margin-bottom: 25px;
+  color: #666;
+  line-height: 1.7;
+  font-size: 15px;
+  text-align: justify;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.need-item {
+/* School Needs Section */
+.school-needs-section {
+  margin-bottom: 30px;
+}
+
+.school-needs-section h3 {
+  color: #5d4037;
+  margin-bottom: 25px;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.school-needs-section h3::before {
+  content: "🎯";
+  font-size: 20px;
+}
+
+/* Needs Grid - Centered Cards */
+.needs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+/* Need Card */
+.need-card {
+  background: #f8f5f0;
+  border-radius: 16px;
+  padding: 20px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.need-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.need-card.selected {
+  border-color: #2e7d32;
+  background: #e8f5e9;
+}
+
+/* Need Header */
+.need-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px;
-  background: var(--background-cream);
-  border-radius: var(--radius-sm);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .need-name {
-  color: var(--title-brown);
-  font-weight: 500;
-}
-
-.need-quantity {
-  color: var(--text-light);
-  font-size: 14px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #5d4037;
 }
 
 .need-urgency {
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
   font-size: 11px;
   font-weight: 600;
+  color: white;
+  text-transform: uppercase;
 }
 
-.need-urgency.high {
-  background: #ffebee;
-  color: #d32f2f;
+/* Need Description */
+.need-description {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 12px;
 }
 
-.need-urgency.medium {
-  background: #fff3e0;
-  color: #f57c00;
+/* Progress Bar */
+.progress-bar {
+  background: #e8e0d5;
+  border-radius: 10px;
+  height: 8px;
+  margin: 12px 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.need-urgency.low {
-  background: #e8f5e9;
+.progress-fill {
+  background: #2e7d32;
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.progress-text {
+  font-size: 12px;
+  color: #666;
+  display: block;
+  text-align: right;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* Quantity Selector */
+.need-quantity-select {
+  margin: 15px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.need-quantity-select label {
+  font-size: 13px;
+  color: #5d4037;
+  font-weight: 500;
+}
+
+.need-quantity-select input {
+  width: 80px;
+  padding: 8px 12px;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.need-quantity-select input:focus {
+  border-color: #2e7d32;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+/* Select Checkbox */
+.select-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #5d4037;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e8e0d5;
+  font-weight: 500;
+}
+
+.select-checkbox input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #2e7d32;
+}
+
+.select-checkbox:hover {
   color: #2e7d32;
 }
 
-.action-buttons {
-  display: flex;
-  gap: 15px;
+/* Donation Summary */
+.donation-summary {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border-radius: 16px;
+  padding: 25px;
   margin-top: 25px;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-light);
+  border: 1px solid #a5d6a7;
+  text-align: center;
 }
 
-.donate-btn, .message-btn {
-  flex: 1;
-  padding: 12px;
-  border-radius: var(--radius-sm);
+.donation-summary h4 {
+  color: #2e7d32;
+  margin-bottom: 15px;
+  font-size: 18px;
   font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
 }
 
+.donation-summary h4::before {
+  content: "🛒";
+  font-size: 18px;
+}
+
+.donation-summary ul {
+  margin: 0 0 20px 0;
+  padding: 0;
+  list-style: none;
+  display: inline-block;
+  text-align: left;
+}
+
+.donation-summary li {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #5d4037;
+  padding: 5px 10px;
+  background: white;
+  border-radius: 8px;
+  margin: 5px 0;
+}
+
+/* Donate Button */
 .donate-btn {
-  background: var(--primary-green);
+  width: 100%;
+  padding: 14px;
+  background: #2e7d32;
   color: white;
   border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .donate-btn:hover {
-  background: var(--hover-yellow);
-  color: var(--title-brown);
+  background: #ffb300;
+  color: #5d4037;
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 179, 0, 0.3);
+}
+
+.donate-btn:active {
+  transform: translateY(0);
+}
+
+/* Action Buttons */
+.action-buttons {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid #e8e0d5;
 }
 
 .message-btn {
+  width: 100%;
+  padding: 14px;
   background: transparent;
-  color: var(--primary-green);
-  border: 2px solid var(--primary-green);
+  color: #2e7d32;
+  border: 2px solid #2e7d32;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .message-btn:hover {
-  background: var(--primary-green);
+  background: #2e7d32;
   color: white;
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(46, 125, 50, 0.2);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 80px;
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #e8e0d5;
+  color: #666;
+  font-size: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Loading State */
+.donor-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f5efe8;
+  width: 100%;
 }
 
 .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--border-light);
-  border-top-color: var(--primary-green);
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e8e0d5;
+  border-top-color: #2e7d32;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin: 50px auto;
+  margin-bottom: 20px;
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 1024px) {
+  .needs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  }
+
+  .school-info-grid {
+    gap: 20px;
+  }
+
+  .school-details-card {
+    max-width: 95%;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .school-details {
     padding: 20px;
   }
-  
+
   .school-details-card {
     padding: 20px;
+    max-width: 100%;
   }
-  
+
+  .back-btn {
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .school-header h1 {
+    font-size: 24px;
+  }
+
+  .school-location {
+    font-size: 13px;
+  }
+
   .school-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .info-item span {
+    font-size: 14px;
+  }
+
+  .needs-grid {
     grid-template-columns: 1fr;
   }
-  
-  .need-item {
+
+  .need-header {
     flex-direction: column;
-    text-align: center;
-    gap: 5px;
+    align-items: flex-start;
   }
-  
-  .action-buttons {
+
+  .need-name {
+    font-size: 16px;
+  }
+
+  .donation-summary {
+    padding: 20px;
+  }
+
+  .empty-state {
+    padding: 40px 20px;
+  }
+
+  .school-description p {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .school-details {
+    padding: 15px;
+  }
+
+  .school-details-card {
+    padding: 15px;
+  }
+
+  .school-header h1 {
+    font-size: 20px;
+  }
+
+  .school-info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .info-item {
+    text-align: center;
+  }
+
+  .need-quantity-select {
     flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .need-quantity-select input {
+    width: 100%;
+  }
+
+  .donate-btn,
+  .message-btn {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .donation-summary ul {
+    padding-left: 0;
   }
 }

@@ -4,7 +4,8 @@ const { protect, authorize } = require('../middleware/authMiddleware');
 const {
   getProfile,
   updateProfile,
-  getImpact
+  getImpact,
+  getDashboardStats
 } = require('../controllers/donorController');
 
 // All donor routes require authentication and donor role
@@ -17,5 +18,6 @@ router.put('/profile', updateProfile);
 
 // Impact routes
 router.get('/impact', getImpact);
+router.get('/dashboard-stats', getDashboardStats);
 
 module.exports = router;

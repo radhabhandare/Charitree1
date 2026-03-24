@@ -1,7 +1,12 @@
 import { useRef } from "react";
 import "./Landing.css";
 import heroImg from "../../assets/hero.png";
-import aboutImg from "../../assets/Aboutus.jpeg"; // Using about.png instead of Aboutus.png
+import aboutImg from "../../assets/Aboutus.jpeg";
+import verifiedImg from "../../assets/FVerifiedAccounts.jpeg";
+import UnifiedDImg from "../../assets/Funifieddashboard.jpeg";
+import SmartcImg from "../../assets/Fsmartc.jpeg";
+import ItembImg from "../../assets/Fitemb.jpeg";
+import ImpactrImg from "../../assets/Fimpactr.jpeg";
 
 const Landing = () => {
   const carouselRef = useRef(null);
@@ -45,38 +50,44 @@ const Landing = () => {
           >
             &#10094;
           </button>
-
-          <div className="feature-carousel" ref={carouselRef}>
+<div className="feature-carousel" ref={carouselRef}>
             {[
               {
                 title: "Verified Accounts",
-                text: "Strict verification to ensure trust and transparency.",
+                text: "Ensures every user and organization is carefully verified, building a safe and trustworthy environment for donations and support.",
+                image: verifiedImg,
               },
               {
                 title: "Smart Campaigns",
-                text: "Create and manage campaigns with ease.",
+                text: "Easily create, manage, and track campaigns with intuitive tools designed to maximize reach and impact..",
+                image: SmartcImg,
               },
               {
                 title: "Unified Dashboard",
-                text: "Track donations, impact, and progress.",
+                text: "Get a complete overview of donations, progress, and impact all in one organized and easy-to-use dashboard..",
+                image: UnifiedDImg,
               },
               {
                 title: "Item-Based Giving",
-                text: "Donate exactly where your help is needed.",
+                text: "Donate specific items directly to those in need, ensuring your contribution is meaningful and purposeful.",
+                image: ItembImg,  
               },
               {
                 title: "Impact Reports",
-                text: "See how every contribution creates change.",
+                text: "Stay informed with detailed reports showing how your contributions are making a real difference.",
+                image: ImpactrImg,
               },
             ].map((item, index) => (
               <div className="impact-card" key={index}>
-                <div className="card-img">Image</div>
+                <div className="card-img">
+                  <img src={item.image} alt={item.title} />
+                </div>
                 <h3 className="text-title">{item.title}</h3>
                 <p className="text-body">{item.text}</p>
                 <button className="card-button">Explore</button>
               </div>
             ))}
-          </div>
+          </div> 
 
           <button
             className="arrow"
@@ -90,31 +101,33 @@ const Landing = () => {
       </section>
 
       {/* ABOUT SECTION */}
-      <section className="about">
-        <h1>Impact Made Easy.</h1>
+      {/* ABOUT US */}
+<section className="about">
+  <h1>Impact Made Easy.</h1>
 
-        <div className="about-content">
-          <img src={aboutImg} alt="About Charitree" className="about-image" />
+  <div className="about-content">
+    <img src={aboutImg} alt="About Charitree" className="about-image" />
 
-          <div className="about-text">
-            <h2>This Is How We Help You</h2>
-            <br />
-            <p>
-              Charitree is a unified digital ecosystem where schools, donors, and NGOs converge to create lasting social change. We believe that the biggest barrier to giving isn't a lack of heart it’s a lack of clarity.
-              By streamlining campaign management and enforcing rigorous verification, we’ve replaced uncertainty with transparency. Whether you are a school listing a critical need or a donor looking to make your mark, Charitree ensures that every contribution takes root and flourishes.
-              <br /><br />
-              By bridging the gap between intention and action through a modern, secure interface, we are building a future where social impact is as visible as it is vital. Here, every seed of support is nurtured by trust, growing into a forest of opportunity for the communities we serve.
-            </p>
+    <div className="about-text">
+      <h2>This Is How We Help You</h2>
+      <br />
+      <p>
+        Charitree is a unified digital ecosystem where schools, donors, and NGOs converge to create lasting social change. We believe that the biggest barrier to giving isn't a lack of heart it’s a lack of clarity.
+        By streamlining campaign management and enforcing rigorous verification, we’ve replaced uncertainty with transparency. Whether you are a school listing a critical need or a donor looking to make your mark, Charitree ensures that every contribution takes root and flourishes.
+        <br /><br />
+        By bridging the gap between intention and action through a modern, secure interface, we are building a future where social impact is as visible as it is vital. Here, every seed of support is nurtured by trust, growing into a forest of opportunity for the communities we serve.
+      </p>
 
-            <div className="about-buttons">
-              <button className="primary1-btn">Learn More</button>
-              <button className="primary1-btn">Watch a Video</button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* NEW BUTTONS ADDED HERE */}
+      <div className="about-buttons">
+        <button className="primary1-btn">Learn More</button>
+        <button className="primary1-btn">Watch a Video</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-      {/* REVIEWS SECTION */}
+      {/* REVIEWS SECTION - ENHANCED */}
       <section className="reviews" id="reviews">
         <h1>What Our <span>Clients</span> Say</h1>
         <p className="reviews-subtitle">Trusted by schools, donors, and NGOs worldwide</p>
@@ -218,6 +231,7 @@ const Landing = () => {
       </section>
 
       {/* CONTACT SECTION */}
+       {/* CONTACT SECTION - UPDATED */}
       <section className="contact" id="contact">
         <div className="contact-wrapper">
           <h1>Send us a Message</h1>
@@ -260,50 +274,27 @@ const Landing = () => {
           </div>
         </div>
       </section>
-
       {/* FOOTER */}
       <footer className="footer">
-        <div className="footer-container">
-          
-          {/* Brand Section */}
-          <div className="footer-brand">
-            <h3>ChariTree</h3>
-            <p>
-              Making every contribution count. Connecting donors, schools, and
-              communities to create meaningful impact.
-            </p>
-          </div>
+  <div className="footer-container">
 
-          {/* Links Section */}
-          <div className="footer-links">
-            
-            <div className="footer-column">
-              <h4>Platform</h4>
-              <a href="#features">Features</a>
-              <a href="#how">How It Works</a>
-              <a href="#reviews">Reviews</a>
-            </div>
+    <h3 className="footer-title">ChariTree</h3>
 
-            <div className="footer-column">
-              <h4>Company</h4>
-              <a href="#about">About Us</a>
-              <a href="#contact">Contact</a>
-              <a href="#faq">FAQ</a>
-            </div>
+    <p className="footer-tagline">
+      Growing kindness, one contribution at a time 🌱
+    </p>
 
-            <div className="footer-column">
-              <h4>Legal</h4>
-              <a href="#privacy">Privacy Policy</a>
-              <a href="#terms">Terms of Service</a>
-            </div>
+    <p className="footer-desc">
+      A platform connecting donors, schools, and communities to create real impact.
+    </p>
 
-          </div>
-        </div>
+    <p className="footer-copy">
+      © 2026 ChariTree. All rights reserved.
+    </p>
 
-        <div className="footer-bottom">
-          <p>© 2026 ChariTree. All rights reserved.</p>
-        </div>
-      </footer>
+  </div>
+</footer>
+
     </>
   );
 };

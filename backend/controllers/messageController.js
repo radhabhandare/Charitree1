@@ -1,6 +1,7 @@
 const Message = require('../models/Message');
 const School = require('../models/School');
 const Donor = require('../models/Donor');
+const Notification = require('../models/Notification');
 
 // @desc    Get conversations for donor
 // @route   GET /api/donor/messages/conversations
@@ -44,6 +45,7 @@ const getConversations = async (req, res) => {
           schoolId: conv._id,
           schoolName: school?.schoolName || 'Unknown School',
           schoolLocation: school?.address?.city || 'Unknown',
+          schoolImage: school?.images?.[0] || null,
           lastMessage: conv.lastMessage,
           lastMessageTime: conv.lastMessageTime,
           unreadCount: conv.unreadCount
@@ -74,6 +76,19 @@ const getMessages = async (req, res) => {
       ]
     }).sort('createdAt');
 
+    // Mark messages as read
+    await Message.updateMany(
+      {
+        schoolId,
+        receiverId: donorId,
+        senderRole: 'school',
+        read: false
+      },
+      {
+        $set: { read: true, readAt: new Date() }
+      }
+    );
+
     res.json(messages);
   } catch (error) {
     console.error('Get messages error:', error);
@@ -87,7 +102,7 @@ const getMessages = async (req, res) => {
 const sendMessage = async (req, res) => {
   try {
     const { schoolId } = req.params;
-    const { message } = req.body;
+    const { message, attachment } = req.body;
     const donorId = req.user.id;
 
     if (!message || !message.trim()) {
@@ -106,17 +121,29 @@ const sendMessage = async (req, res) => {
       receiverRole: 'school',
       schoolId,
       text: message.trim(),
-      read: false
+      read: false,
+      attachment: attachment || null
     });
 
     await newMessage.save();
+
+    // Create notification for school
+    const notification = new Notification({
+      userId: school.userId,
+      title: 'New Message Received',
+      message: `A donor has sent you a message.`,
+      type: 'new_message',
+      relatedId: newMessage._id
+    });
+    await notification.save();
 
     res.status(201).json({
       id: newMessage._id,
       sender: 'donor',
       text: newMessage.text,
       createdAt: newMessage.createdAt,
-      read: newMessage.read
+      read: newMessage.read,
+      attachment: newMessage.attachment
     });
   } catch (error) {
     console.error('Send message error:', error);
@@ -208,10 +235,33 @@ const getRecentMessages = async (req, res) => {
   }
 };
 
+// @desc    Delete message
+// @route   DELETE /api/donor/messages/:messageId
+// @access  Private (Donor)
+const deleteMessage = async (req, res) => {
+  try {
+    const message = await Message.findOne({
+      _id: req.params.messageId,
+      senderId: req.user.id
+    });
+
+    if (!message) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+
+    await message.deleteOne();
+    res.json({ success: true, message: 'Message deleted' });
+  } catch (error) {
+    console.error('Delete message error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   getConversations,
   getMessages,
   sendMessage,
   markAsRead,
-  getRecentMessages
+  getRecentMessages,
+  deleteMessage
 };

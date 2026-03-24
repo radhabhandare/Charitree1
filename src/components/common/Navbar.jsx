@@ -17,26 +17,12 @@ const Navbar = () => {
     { name: "Contact Us", id: "contact" },
   ];
 
-  // Check if current page is a dashboard page - MUST be after all hooks
-  const isDashboard = location.pathname.includes('/dashboard') || 
-                       location.pathname.includes('/admin') ||
-                       location.pathname.includes('/profile') ||
-                       location.pathname.includes('/history') ||
-                       location.pathname.includes('/tracking') ||
-                       location.pathname.includes('/browse') ||
-                       location.pathname.includes('/messages') ||
-                       location.pathname.includes('/needs') ||
-                       location.pathname.includes('/donations') ||
-                       location.pathname.includes('/create') ||
-                       location.pathname.includes('/settings') ||
-                       location.pathname.includes('/verifications') ||
-                       location.pathname.includes('/reports') ||
-                       location.pathname.includes('/users');
+  // Only show navbar on landing page (home page)
+  const showNavbar = location.pathname === "/";
 
   // Handle scroll effect
   useEffect(() => {
-    // Don't run scroll effects on dashboard pages
-    if (isDashboard) return;
+    if (!showNavbar) return;
     
     const handleScroll = () => {
       if (window.scrollY > 50) {
@@ -48,39 +34,34 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isDashboard]);
+  }, [showNavbar]);
 
   // Set active menu item based on scroll position when on home page
   useEffect(() => {
-    // Don't run on dashboard pages
-    if (isDashboard) return;
+    if (!showNavbar || location.pathname !== "/") return;
     
-    if (location.pathname === "/") {
-      const handleScrollSpy = () => {
-        const sections = menuItems.map(item => document.getElementById(item.id));
-        const scrollPosition = window.scrollY + 150;
+    const handleScrollSpy = () => {
+      const sections = menuItems.map(item => document.getElementById(item.id));
+      const scrollPosition = window.scrollY + 150;
 
-        for (let i = sections.length - 1; i >= 0; i--) {
-          const section = sections[i];
-          if (section && section.offsetTop <= scrollPosition) {
-            setActive(menuItems[i].id);
-            break;
-          }
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const section = sections[i];
+        if (section && section.offsetTop <= scrollPosition) {
+          setActive(menuItems[i].id);
+          break;
         }
-      };
+      }
+    };
 
-      window.addEventListener("scroll", handleScrollSpy);
-      return () => window.removeEventListener("scroll", handleScrollSpy);
-    }
-  }, [location.pathname, isDashboard]);
+    window.addEventListener("scroll", handleScrollSpy);
+    return () => window.removeEventListener("scroll", handleScrollSpy);
+  }, [location.pathname, showNavbar]);
 
   const handleScroll = (id) => {
     setActive(id);
     
-    // If we're not on the home page, navigate to home first then scroll
     if (location.pathname !== "/") {
       navigate("/");
-      // Wait for navigation to complete then scroll
       setTimeout(() => {
         const section = document.getElementById(id);
         if (section) {
@@ -109,8 +90,7 @@ const Navbar = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Don't render navbar on dashboard pages
-  if (isDashboard) {
+  if (!showNavbar) {
     return null;
   }
 

@@ -1,13 +1,14 @@
 const Donation = require('../models/Donation');
 const School = require('../models/School');
 const Donor = require('../models/Donor');
+const Notification = require('../models/Notification');
 
-// @desc    Create a new donation
+// @desc    Create a new donation with multiple methods
 // @route   POST /api/donations
 // @access  Private (Donor)
 const createDonation = async (req, res) => {
   try {
-    const { schoolId, items } = req.body;
+    const { schoolId, items, donationMethod, courierDetails, selfDeliveryDetails } = req.body;
     const donorId = req.user.id;
 
     if (!schoolId || !items || items.length === 0) {
@@ -32,8 +33,22 @@ const createDonation = async (req, res) => {
       schoolLocation: school.address?.city || 'Unknown',
       items,
       totalItems,
+      donationMethod: donationMethod || 'ecommerce',
+      status: 'pending',
       timeline: { pending: new Date() }
     });
+
+    if (donationMethod === 'courier' && courierDetails) {
+      donation.courier = courierDetails.courierName;
+      donation.trackingNumber = courierDetails.trackingId;
+      donation.courierReceipt = courierDetails.receiptImage;
+    }
+
+    if (donationMethod === 'self_delivery' && selfDeliveryDetails) {
+      donation.selfDeliveryDate = selfDeliveryDetails.deliveryDate;
+      donation.selfDeliveryTime = selfDeliveryDetails.deliveryTime;
+      donation.deliveryNotes = selfDeliveryDetails.notes;
+    }
 
     await donation.save();
 
@@ -44,10 +59,35 @@ const createDonation = async (req, res) => {
         $inc: { 
           totalDonations: 1, 
           totalItems: totalItems,
-          schoolsSupported: 1 
+          schoolsSupported: 1,
+          impactScore: totalItems * 5
         } 
       }
     );
+
+    // Update school needs - reduce quantity
+    for (const item of items) {
+      const schoolNeed = school.needs.find(n => n.item === item.name);
+      if (schoolNeed) {
+        schoolNeed.fulfilled = (schoolNeed.fulfilled || 0) + item.quantity;
+        if (schoolNeed.fulfilled >= schoolNeed.quantity) {
+          schoolNeed.status = 'fulfilled';
+        } else {
+          schoolNeed.status = 'partial';
+        }
+      }
+    }
+    await school.save();
+
+    // Create notification for school
+    const notification = new Notification({
+      userId: school.userId,
+      title: 'New Donation Received!',
+      message: `A donor has donated ${totalItems} items to your school via ${donationMethod === 'ecommerce' ? 'E-commerce' : donationMethod === 'courier' ? 'Courier' : 'Self Delivery'}. Please review and accept.`,
+      type: 'new_donation',
+      relatedId: donation._id
+    });
+    await notification.save();
 
     res.status(201).json({
       success: true,
@@ -56,6 +96,62 @@ const createDonation = async (req, res) => {
   } catch (error) {
     console.error('Create donation error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// @desc    Update donation status (Donor updates delivery)
+// @route   PUT /api/donor/donations/:id/status
+// @access  Private (Donor)
+const updateDonationStatus = async (req, res) => {
+  try {
+    const { status, trackingDetails, deliveryProof } = req.body;
+    const donation = await Donation.findById(req.params.id);
+    
+    if (!donation) {
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    // Check if donor owns this donation
+    if (donation.donorId.toString() !== req.user.id) {
+      return res.status(403).json({ message: 'Unauthorized' });
+    }
+
+    donation.status = status;
+    donation.timeline[status] = new Date();
+    
+    if (trackingDetails) {
+      donation.trackingNumber = trackingDetails.trackingId;
+      donation.courier = trackingDetails.courierName;
+    }
+    
+    if (deliveryProof) {
+      donation.deliveryProof = {
+        image: deliveryProof.image,
+        notes: deliveryProof.notes,
+        uploadedAt: new Date()
+      };
+    }
+    
+    if (status === 'delivered') {
+      donation.actualDelivery = new Date();
+    }
+
+    await donation.save();
+
+    // Create notification for school
+    const notification = new Notification({
+      userId: donation.schoolId,
+      title: `Donation Update: ${status}`,
+      message: `Donor has updated the donation status to ${status}. ${status === 'shipped' ? 'Tracking ID: ' + donation.trackingNumber : ''}`,
+      type: 'donation_update',
+      relatedId: donation._id
+    });
+    await notification.save();
+
+    res.json({ success: true, message: `Donation status updated to ${status}`, donation });
+  } catch (error) {
+    console.error('Update donation status error:', error);
+    res.status(500).json({ message: 'Server error' });
   }
 };
 
@@ -83,7 +179,7 @@ const getRecentDonations = async (req, res) => {
     const donations = await Donation.find({ donorId: req.user.id })
       .sort('-createdAt')
       .limit(5)
-      .select('id schoolName schoolLocation items status createdAt');
+      .select('id schoolName schoolLocation items status createdAt donationMethod');
 
     res.json(donations);
   } catch (error) {
@@ -127,6 +223,15 @@ const requestUpdate = async (req, res) => {
       return res.status(404).json({ message: 'Donation not found' });
     }
 
+    const notification = new Notification({
+      userId: donation.schoolId,
+      title: 'Donation Update Requested',
+      message: `A donor has requested an update on their donation.`,
+      type: 'update_request',
+      relatedId: donation._id
+    });
+    await notification.save();
+
     res.json({ 
       success: true, 
       message: 'Update requested successfully. The school will be notified.' 
@@ -160,11 +265,53 @@ const getDonorStats = async (req, res) => {
   }
 };
 
+// @desc    Upload delivery proof
+// @route   POST /api/donor/donations/:id/proof
+// @access  Private (Donor)
+const uploadDeliveryProof = async (req, res) => {
+  try {
+    const donation = await Donation.findOne({
+      _id: req.params.id,
+      donorId: req.user.id
+    });
+
+    if (!donation) {
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    const { proofImage, notes } = req.body;
+    
+    donation.deliveryProof = {
+      image: proofImage,
+      notes: notes,
+      uploadedAt: new Date()
+    };
+    
+    await donation.save();
+
+    const notification = new Notification({
+      userId: donation.schoolId,
+      title: 'Delivery Proof Uploaded',
+      message: `Donor has uploaded delivery proof for donation ${donation.id}.`,
+      type: 'donation_update',
+      relatedId: donation._id
+    });
+    await notification.save();
+
+    res.json({ success: true, message: 'Delivery proof uploaded successfully' });
+  } catch (error) {
+    console.error('Upload proof error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   createDonation,
   getDonorDonations,
   getRecentDonations,
   getDonationDetails,
   requestUpdate,
-  getDonorStats
+  getDonorStats,
+  uploadDeliveryProof,
+  updateDonationStatus
 };

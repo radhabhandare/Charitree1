@@ -1,6 +1,8 @@
 const Donor = require('../models/Donor');
 const User = require('../models/User');
 const Donation = require('../models/Donation');
+const School = require('../models/School');
+const Impact = require('../models/Impact');
 
 // @desc    Get donor profile
 // @route   GET /api/donor/profile
@@ -29,7 +31,8 @@ const getProfile = async (req, res) => {
       preferences: donor.preferences,
       totalDonations: donor.totalDonations,
       totalItems: donor.totalItems,
-      schoolsSupported: donor.schoolsSupported
+      schoolsSupported: donor.schoolsSupported,
+      impactScore: donor.impactScore || 0
     });
   } catch (error) {
     console.error('Get profile error:', error);
@@ -101,7 +104,10 @@ const getImpact = async (req, res) => {
     res.json({
       studentsImpacted,
       itemsDonated: donor?.totalItems || 0,
-      categoriesSupported: categories
+      categoriesSupported: categories,
+      impactScore: donor?.impactScore || 0,
+      totalDonations: donor?.totalDonations || 0,
+      schoolsSupported: donor?.schoolsSupported || 0
     });
   } catch (error) {
     console.error('Get impact error:', error);
@@ -109,8 +115,34 @@ const getImpact = async (req, res) => {
   }
 };
 
+// @desc    Get donor dashboard stats
+// @route   GET /api/donor/dashboard-stats
+// @access  Private (Donor)
+const getDashboardStats = async (req, res) => {
+  try {
+    const donor = await Donor.findOne({ userId: req.user.id });
+    const donations = await Donation.find({ donorId: req.user.id });
+
+    const activeDonations = donations.filter(d => d.status === 'pending' || d.status === 'accepted' || d.status === 'processing' || d.status === 'shipped').length;
+    const completedDonations = donations.filter(d => d.status === 'delivered').length;
+
+    res.json({
+      totalDonations: donations.length,
+      activeDonations,
+      completedDonations,
+      totalItems: donor?.totalItems || 0,
+      schoolsSupported: donor?.schoolsSupported || 0,
+      impactScore: donor?.impactScore || 0
+    });
+  } catch (error) {
+    console.error('Get dashboard stats error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   getProfile,
   updateProfile,
-  getImpact
+  getImpact,
+  getDashboardStats
 };
