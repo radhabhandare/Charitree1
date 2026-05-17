@@ -57,7 +57,6 @@ const DonorMessages = () => {
       });
       setMessages(response.data);
       
-      // Mark as read
       if (conversation.unreadCount > 0) {
         await api.put(`/donor/messages/${conversation.schoolId}/read`, {}, {
           headers: { Authorization: `Bearer ${token}` }
@@ -90,14 +89,11 @@ const DonorMessages = () => {
       });
       
       setMessages(prev => [...prev, response.data]);
-      
-      // Update last message in conversations list
       setConversations(prev => prev.map(c => 
         c.schoolId === selectedConversation.schoolId 
           ? { ...c, lastMessage: newMessage, lastMessageTime: new Date().toISOString() }
           : c
       ));
-      
       setNewMessage('');
     } catch (error) {
       console.error('Error sending message:', error);
@@ -148,14 +144,17 @@ const DonorMessages = () => {
       <div className="messages-container">
         <div className="conversations-sidebar">
           <div className="sidebar-header">
-            <h2>Conversations</h2>
+            <h2>Conversations with Schools</h2>
           </div>
           <div className="conversations-list">
             {conversations.length === 0 ? (
-              <div className="empty-state">No conversations yet</div>
+              <div className="empty-state">No conversations yet. Start by messaging a school from its profile page.</div>
             ) : (
               conversations.map(conv => (
                 <div key={conv.schoolId} className={`conversation-item ${selectedConversation?.schoolId === conv.schoolId ? 'active' : ''}`} onClick={() => selectConversation(conv)}>
+                  <div className="conv-avatar">
+                    <span>{conv.schoolName?.charAt(0) || 'S'}</span>
+                  </div>
                   <div className="conv-info">
                     <div className="conv-header">
                       <h4>{conv.schoolName}</h4>
@@ -175,6 +174,9 @@ const DonorMessages = () => {
             <>
               <div className="messages-header-area">
                 <div className="school-info">
+                  <div className="school-avatar">
+                    <span>{selectedConversation.schoolName?.charAt(0) || 'S'}</span>
+                  </div>
                   <div>
                     <h3>{selectedConversation.schoolName}</h3>
                     <p className="school-status">School</p>
@@ -211,7 +213,7 @@ const DonorMessages = () => {
             <div className="no-conversation">
               <span className="no-msg-icon">💬</span>
               <h3>Select a conversation</h3>
-              <p>Choose a school from the sidebar to start messaging</p>
+              <p>Choose a school from the sidebar to start messaging, or go to a school profile and click "Message School"</p>
             </div>
           )}
         </div>

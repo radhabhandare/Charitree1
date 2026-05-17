@@ -13,17 +13,27 @@ const {
   deleteSchoolNeed,
   getSchoolDonations,
   getRecentDonations,
-  updateDonationStatus,
+  acceptDonation,
+  rejectDonation,
+  markAsReceived,
   getSchoolNotifications,
   getSchoolAnalytics
 } = require('../controllers/schoolController');
+
+console.log('🔧 Loading school routes...');
+
+// Debug middleware to log all requests
+router.use((req, res, next) => {
+  console.log(`📌 School route hit: ${req.method} ${req.originalUrl}`);
+  next();
+});
 
 // Public school routes (for donors/campaigns)
 router.get('/verified', protect, authorize('donor', 'campaign'), getVerifiedSchools);
 router.get('/locations', protect, authorize('donor', 'campaign'), getSchoolLocations);
 router.get('/:id', protect, authorize('donor', 'campaign', 'school'), getSchoolById);
 
-// School protected routes
+// School protected routes - ALL routes after this require school role
 router.use(protect);
 router.use(authorize('school'));
 
@@ -42,12 +52,16 @@ router.delete('/needs/:needId', deleteSchoolNeed);
 // Donations
 router.get('/donations', getSchoolDonations);
 router.get('/donations/recent', getRecentDonations);
-router.put('/donations/:donationId/status', updateDonationStatus);
+router.put('/donations/:donationId/accept', acceptDonation);
+router.put('/donations/:donationId/reject', rejectDonation);
+router.put('/donations/:donationId/received', markAsReceived);
 
 // Notifications
 router.get('/notifications', getSchoolNotifications);
 
 // Analytics
 router.get('/analytics', getSchoolAnalytics);
+
+console.log('✅ School routes loaded');
 
 module.exports = router;

@@ -23,17 +23,15 @@ const SchoolNeeds = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await api.get('/school/needs', {
+      // Use /schools/needs (with 's') for API
+      const response = await api.get('/schools/needs', {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('📋 Fetched needs:', response.data);
       setNeeds(response.data);
     } catch (error) {
       console.error('Error fetching needs:', error);
-      // Use real data from auth context if API fails
-      if (window.localStorage.getItem('user')) {
-        const user = JSON.parse(localStorage.getItem('user'));
-        setNeeds(user?.profile?.needs || []);
-      }
+      setNeeds([]);
     } finally {
       setLoading(false);
     }
@@ -43,9 +41,11 @@ const SchoolNeeds = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await api.post('/school/needs', newNeed, {
+      // Use /schools/needs (with 's') for API
+      const response = await api.post('/schools/needs', newNeed, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      console.log('✅ Need created:', response.data);
       setShowCreateModal(false);
       setNewNeed({ item: '', quantity: '', urgency: 'medium', category: '' });
       fetchNeeds();
@@ -56,16 +56,24 @@ const SchoolNeeds = () => {
   };
 
   const handleDeleteNeed = async (needId) => {
+    if (!needId) {
+      console.error('No need ID provided');
+      return;
+    }
+    
     if (window.confirm('Are you sure you want to delete this need?')) {
       try {
         const token = localStorage.getItem('token');
-        await api.delete(`/school/needs/${needId}`, {
+        console.log('🗑️ Deleting need:', needId);
+        // Use /schools/needs (with 's') for API
+        await api.delete(`/schools/needs/${needId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        alert('Need deleted successfully!');
         fetchNeeds();
       } catch (error) {
-        console.error('Error deleting need:', error);
-        alert('Failed to delete need.');
+        console.error('Error deleting need:', error.response?.data || error.message);
+        alert('Failed to delete need. Please try again.');
       }
     }
   };
@@ -134,15 +142,18 @@ const SchoolNeeds = () => {
             </thead>
             <tbody>
               {needs.map(need => (
-                <tr key={need._id || need.id}>
+                <tr key={need._id}>
                   <td><strong>{need.item}</strong></td>
                   <td>{need.quantity}</td>
                   <td>{need.category || 'General'}</td>
                   <td>{getUrgencyBadge(need.urgency)}</td>
                   <td>{getStatusBadge(need.status)}</td>
-                  <td>{new Date(need.createdAt || need.date).toLocaleDateString()}</td>
+                  <td>{new Date(need.createdAt).toLocaleDateString()}</td>
                   <td>
-                    <button className="delete-btn" onClick={() => handleDeleteNeed(need._id || need.id)}>
+                    <button 
+                      className="delete-btn" 
+                      onClick={() => handleDeleteNeed(need._id)}
+                    >
                       Delete
                     </button>
                   </td>

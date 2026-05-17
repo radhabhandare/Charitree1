@@ -22,7 +22,8 @@ const SchoolAnalytics = () => {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await api.get('/school/analytics', {
+      // Use /schools/analytics (with 's') for API
+      const response = await api.get('/schools/analytics', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAnalytics(response.data);
@@ -56,7 +57,6 @@ const SchoolAnalytics = () => {
         <h1>Analytics Dashboard</h1>
       </div>
 
-      {/* Stats Cards */}
       <div className="analytics-stats">
         <div className="stat-card">
           <div className="stat-icon">📦</div>
@@ -88,7 +88,6 @@ const SchoolAnalytics = () => {
         </div>
       </div>
 
-      {/* Progress Bar */}
       <div className="progress-section">
         <h3>Needs Fulfillment Progress</h3>
         <div className="progress-bar-container">
@@ -104,7 +103,6 @@ const SchoolAnalytics = () => {
         </p>
       </div>
 
-      {/* Monthly Donations Chart */}
       <div className="chart-section">
         <h3>Monthly Donations</h3>
         <div className="bar-chart">
@@ -127,7 +125,6 @@ const SchoolAnalytics = () => {
         </div>
       </div>
 
-      {/* Category Breakdown */}
       <div className="chart-section">
         <h3>Items by Category</h3>
         <div className="category-list">

@@ -23,7 +23,7 @@ const donationSchema = new mongoose.Schema({
     name: { type: String, required: true },
     quantity: { type: Number, required: true, min: 1 },
     category: { type: String },
-    price: { type: Number } // For e-commerce donations
+    price: { type: Number }
   }],
   totalItems: {
     type: Number,
@@ -46,8 +46,8 @@ const donationSchema = new mongoose.Schema({
   },
   trackingNumber: {
     type: String,
-    unique: true,
-    sparse: true
+    sparse: true,
+    default: null
   },
   courier: {
     type: String
@@ -90,9 +90,10 @@ const donationSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Generate tracking number before saving
+// Generate tracking number only when status is processing
 donationSchema.pre('save', async function(next) {
-  if (!this.trackingNumber && this.status === 'processing') {
+  // Only generate tracking number if status is processing and no tracking number exists
+  if (this.status === 'processing' && !this.trackingNumber) {
     const prefix = 'CHAR';
     const random = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
     this.trackingNumber = `${prefix}${random}`;

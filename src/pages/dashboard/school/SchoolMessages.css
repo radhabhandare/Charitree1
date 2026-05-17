@@ -1,23 +1,23 @@
 .school-messages-page {
   padding: 30px;
-  max-width: 1200px;
-  margin: 0 auto;
-  background: #f5efe8;
+  width: 100%;
   min-height: 100vh;
+  background: #f5efe8;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-/* Header */
 .messages-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-  flex-wrap: wrap;
-  gap: 15px;
   background: white;
   padding: 20px 25px;
   border-radius: 20px;
   border: 1px solid #e8e0d5;
+  flex-wrap: wrap;
+  gap: 15px;
 }
 
 .messages-header h1 {
@@ -41,7 +41,40 @@
   transform: translateX(-5px);
 }
 
-/* Messages Container */
+/* Connection Badge */
+.connection-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.connection-badge.online {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.connection-badge.offline {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
 .messages-container {
   display: grid;
   grid-template-columns: 320px 1fr;
@@ -102,6 +135,7 @@
 }
 
 .conv-avatar {
+  position: relative;
   width: 45px;
   height: 45px;
   background: #2e7d32;
@@ -112,6 +146,19 @@
   color: white;
   font-weight: 600;
   font-size: 18px;
+  flex-shrink: 0;
+}
+
+.online-dot {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #4caf50;
+  border-radius: 50%;
+  border: 2px solid white;
+  animation: pulse 1.5s infinite;
 }
 
 .conv-info {
@@ -179,6 +226,7 @@
 }
 
 .donor-avatar {
+  position: relative;
   width: 45px;
   height: 45px;
   background: #ffb300;
@@ -202,7 +250,11 @@
   font-size: 12px;
 }
 
-/* Messages List */
+.typing-status {
+  color: #ff9800;
+  font-style: italic;
+}
+
 .messages-list {
   flex: 1;
   overflow-y: auto;
@@ -243,6 +295,7 @@
   padding: 10px 15px;
   border-radius: 18px;
   position: relative;
+  word-wrap: break-word;
 }
 
 .message.school .message-bubble {
@@ -258,10 +311,14 @@
   border-bottom-left-radius: 4px;
 }
 
+.message.pending .message-bubble {
+  opacity: 0.7;
+}
+
 .message-bubble p {
   margin: 0 0 5px 0;
-  word-wrap: break-word;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .message-time {
@@ -271,7 +328,48 @@
   text-align: right;
 }
 
-/* Message Input */
+.msg-status {
+  margin-left: 4px;
+}
+
+/* Typing Indicator */
+.typing-indicator-wrapper {
+  margin: 5px 0;
+}
+
+.typing-bubble {
+  background: white !important;
+  border: 1px solid #e8e0d5 !important;
+  padding: 12px 16px !important;
+  width: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: #999;
+  border-radius: 50%;
+  animation: typingBounce 1.4s infinite;
+}
+
+.typing-dot:nth-child(1) { animation-delay: 0s; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  30% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
 .message-input-area {
   padding: 15px 20px;
   border-top: 1px solid #e8e0d5;
@@ -313,9 +411,14 @@
 .send-btn.active:hover {
   background: #ffb300;
   color: #5d4037;
+  transform: translateY(-2px);
 }
 
-/* No Conversation State */
+.send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .no-conversation {
   flex: 1;
   display: flex;
@@ -334,6 +437,12 @@
 .no-conversation h3 {
   color: #5d4037;
   margin-bottom: 10px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  color: #999;
 }
 
 /* Scrollbar */
@@ -375,13 +484,8 @@
     height: 500px;
   }
 
-  .messages-header-area {
+  .messages-header {
     flex-direction: column;
-    gap: 10px;
     text-align: center;
-  }
-
-  .message-bubble {
-    max-width: 85%;
   }
 }

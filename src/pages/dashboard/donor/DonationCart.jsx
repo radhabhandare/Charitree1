@@ -19,6 +19,22 @@ const DonationCart = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  // Amazon/Flipkart product links for common items
+  const productLinks = {
+    'Books': 'https://www.amazon.in/s?k=educational+books+for+school',
+    'Notebooks': 'https://www.amazon.in/s?k=notebooks+for+school',
+    'Stationery': 'https://www.amazon.in/s?k=stationery+set',
+    'School Bags': 'https://www.amazon.in/s?k=school+bags+for+kids',
+    'Sports Kits': 'https://www.amazon.in/s?k=sports+kit+for+school',
+    'Uniforms': 'https://www.amazon.in/s?k=school+uniforms',
+    'Science Equipment': 'https://www.amazon.in/s?k=science+lab+equipment',
+    'Computer Lab': 'https://www.amazon.in/s?k=computer+lab+equipment',
+    'Furniture': 'https://www.amazon.in/s?k=school+furniture',
+    'Drinking Water': 'https://www.amazon.in/s?k=water+purifier+for+school',
+    'Toilets': 'https://www.amazon.in/s?k=toilet+cleaning+products',
+    'Library Books': 'https://www.amazon.in/s?k=children+story+books'
+  };
+
   useEffect(() => {
     loadCart();
   }, []);
@@ -55,9 +71,26 @@ const DonationCart = () => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
   };
 
+  const handleEcommerceCheckout = (item) => {
+    const searchTerm = item.itemName;
+    const link = productLinks[searchTerm] || `https://www.amazon.in/s?k=${encodeURIComponent(searchTerm)}+for+school`;
+    window.open(link, '_blank');
+    alert(`Please purchase ${item.itemName} on the opened e-commerce site. After purchase, come back to update tracking.`);
+    
+    // Auto-switch to courier mode after e-commerce purchase
+    setDonationMethod('courier');
+  };
+
   const handleCheckout = async () => {
     if (cartItems.length === 0) {
       alert('Your cart is empty');
+      return;
+    }
+
+    if (donationMethod === 'ecommerce') {
+      // For e-commerce, open Amazon/Flipkart for each unique item
+      const uniqueItems = [...new Map(cartItems.map(item => [item.itemName, item])).values()];
+      uniqueItems.forEach(item => handleEcommerceCheckout(item));
       return;
     }
 
@@ -83,7 +116,7 @@ const DonationCart = () => {
 
       if (response.data.success) {
         localStorage.removeItem('donationCart');
-        alert('Donation initiated successfully!');
+        alert('Donation initiated successfully! You can track it in your donation history.');
         navigate('/donor/history');
       }
     } catch (error) {
@@ -168,7 +201,7 @@ const DonationCart = () => {
               <div className="method-icon">🛒</div>
               <div className="method-info">
                 <strong>E-commerce Donation</strong>
-                <p>Pay online, items shipped directly to school</p>
+                <p>Purchase on Amazon/Flipkart - items shipped directly to school</p>
               </div>
             </label>
 
@@ -290,7 +323,7 @@ const DonationCart = () => {
             onClick={handleCheckout}
             disabled={loading}
           >
-            {loading ? 'Processing...' : 'Complete Donation'}
+            {loading ? 'Processing...' : donationMethod === 'ecommerce' ? 'Shop on Amazon/Flipkart' : 'Complete Donation'}
           </button>
         </div>
       </div>

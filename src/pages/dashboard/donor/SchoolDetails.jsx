@@ -25,7 +25,6 @@ const SchoolDetails = () => {
       console.log('✅ School details fetched:', response.data);
       setSchool(response.data);
       
-      // Initialize quantities
       const initialQuantities = {};
       response.data.needs?.forEach(need => {
         initialQuantities[need._id] = 1;
@@ -44,10 +43,8 @@ const SchoolDetails = () => {
       return;
     }
 
-    // Get existing cart
     const existingCart = JSON.parse(localStorage.getItem('donationCart') || '[]');
     
-    // Add selected items
     const newItems = selectedNeeds.map(need => ({
       needId: need._id,
       schoolId: school._id,
@@ -122,30 +119,12 @@ const SchoolDetails = () => {
         </div>
         
         <div className="school-info-grid">
-          <div className="info-item">
-            <label>School Type</label>
-            <span>{school.schoolType}</span>
-          </div>
-          <div className="info-item">
-            <label>Established</label>
-            <span>{school.establishmentYear}</span>
-          </div>
-          <div className="info-item">
-            <label>Students</label>
-            <span>{school.studentCount}</span>
-          </div>
-          <div className="info-item">
-            <label>Teachers</label>
-            <span>{school.teacherCount}</span>
-          </div>
-          <div className="info-item">
-            <label>Principal</label>
-            <span>{school.principalName}</span>
-          </div>
-          <div className="info-item">
-            <label>Phone</label>
-            <span>{school.phoneNumber}</span>
-          </div>
+          <div className="info-item"><label>School Type</label><span>{school.schoolType}</span></div>
+          <div className="info-item"><label>Established</label><span>{school.establishmentYear}</span></div>
+          <div className="info-item"><label>Students</label><span>{school.studentCount}</span></div>
+          <div className="info-item"><label>Teachers</label><span>{school.teacherCount}</span></div>
+          <div className="info-item"><label>Principal</label><span>{school.principalName}</span></div>
+          <div className="info-item"><label>Phone</label><span>{school.phoneNumber}</span></div>
         </div>
         
         <div className="school-description">
@@ -166,10 +145,7 @@ const SchoolDetails = () => {
                 </div>
                 <p className="need-description">Required: {need.quantity} items</p>
                 <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${(need.fulfilled / need.quantity) * 100}%` }}
-                  ></div>
+                  <div className="progress-fill" style={{ width: `${(need.fulfilled / need.quantity) * 100}%` }}></div>
                   <span className="progress-text">{need.fulfilled} / {need.quantity} received</span>
                 </div>
                 <div className="need-quantity-select">
@@ -184,11 +160,7 @@ const SchoolDetails = () => {
                   />
                 </div>
                 <label className="select-checkbox">
-                  <input 
-                    type="checkbox" 
-                    checked={selectedNeeds.includes(need)}
-                    onChange={() => toggleNeedSelection(need)}
-                  />
+                  <input type="checkbox" checked={selectedNeeds.includes(need)} onChange={() => toggleNeedSelection(need)} />
                   Select to donate
                 </label>
               </div>
@@ -200,15 +172,10 @@ const SchoolDetails = () => {
               <h4>Selected Items</h4>
               <ul>
                 {selectedNeeds.map((need, idx) => (
-                  <li key={idx}>
-                    {need.item} - {quantities[need._id] || 1} item(s)
-                  </li>
+                  <li key={idx}>{need.item} - {quantities[need._id] || 1} item(s)</li>
                 ))}
               </ul>
-              <button 
-                className="donate-btn" 
-                onClick={addToCart}
-              >
+              <button className="donate-btn" onClick={addToCart}>
                 Add to Cart ({selectedNeeds.length} items)
               </button>
             </div>

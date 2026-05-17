@@ -1,21 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const { protect, authorize } = require('../middleware/authMiddleware');
-const {
-  getActiveCampaigns,
-  getCampaignDetails,
-  createCampaign,
-  donateToCampaign
-} = require('../controllers/campaignController');
 
-// Public campaign routes (for donors)
+// Mock campaign data for now - will be replaced with real data
+const getActiveCampaigns = async (req, res) => {
+  try {
+    // Return empty array for now - you can add real campaigns later
+    res.json([]);
+  } catch (error) {
+    console.error('Get campaigns error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// All campaign routes
 router.get('/active', protect, authorize('donor'), getActiveCampaigns);
-router.get('/:id', protect, authorize('donor', 'campaign'), getCampaignDetails);
-
-// Campaign creation (for campaign organizers)
-router.post('/', protect, authorize('campaign'), createCampaign);
-
-// Donate to campaign (for donors)
-router.post('/:id/donate', protect, authorize('donor'), donateToCampaign);
 
 module.exports = router;

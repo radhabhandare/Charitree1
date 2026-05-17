@@ -34,14 +34,14 @@ const SchoolDashboard = () => {
       setLoading(true);
       const token = localStorage.getItem('token');
       
+      // IMPORTANT: Use /api/schools/ (with 's') for API calls
       const [statsRes, donationsRes, needsRes, messagesRes] = await Promise.all([
-        api.get('/school/stats', { headers: { Authorization: `Bearer ${token}` } }),
-        api.get('/school/donations/recent', { headers: { Authorization: `Bearer ${token}` } }),
-        api.get('/school/needs', { headers: { Authorization: `Bearer ${token}` } }),
+        api.get('/schools/stats', { headers: { Authorization: `Bearer ${token}` } }),
+        api.get('/schools/donations/recent', { headers: { Authorization: `Bearer ${token}` } }),
+        api.get('/schools/needs', { headers: { Authorization: `Bearer ${token}` } }),
         api.get('/school/messages/recent', { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
-      // Auto-update need urgency based on age
       const needsWithAutoUrgency = needsRes.data.map(need => {
         const daysOld = (new Date() - new Date(need.createdAt)) / (1000 * 60 * 60 * 24);
         let urgency = need.urgency;
@@ -78,7 +78,7 @@ const SchoolDashboard = () => {
   const fetchNotifications = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await api.get('/school/notifications', {
+      const response = await api.get('/schools/notifications', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setNotifications(response.data);
@@ -141,7 +141,6 @@ const SchoolDashboard = () => {
     });
   };
 
-  // Calculate progress percentage for a need
   const getProgressPercentage = (need) => {
     if (!need.quantity) return 0;
     return (need.fulfilled / need.quantity) * 100;
@@ -158,7 +157,6 @@ const SchoolDashboard = () => {
 
   return (
     <div className="school-dashboard">
-      {/* Header */}
       <div className="dashboard-header">
         <div className="header-left">
           <h1>Welcome, {user?.profile?.schoolName || 'School'}!</h1>
@@ -187,7 +185,6 @@ const SchoolDashboard = () => {
         </div>
       </div>
 
-      {/* Stats Cards */}
       <div className="stats-grid">
         <div className="stat-card" onClick={() => navigate('/school/donations')}>
           <div className="stat-icon">📦</div>
@@ -222,7 +219,6 @@ const SchoolDashboard = () => {
         </div>
       </div>
 
-      {/* Quick Actions */}
       <div className="quick-actions">
         <button className="action-btn primary" onClick={() => navigate('/school/needs')}>
           <span>➕</span> Post New Need
@@ -241,9 +237,7 @@ const SchoolDashboard = () => {
         </button>
       </div>
 
-      {/* Main Content Grid */}
       <div className="dashboard-grid">
-        {/* Recent Donations */}
         <div className="dashboard-card">
           <div className="card-header">
             <h2>Recent Donations</h2>
@@ -280,7 +274,6 @@ const SchoolDashboard = () => {
           </div>
         </div>
 
-        {/* Pending Needs with Progress Bar */}
         <div className="dashboard-card">
           <div className="card-header">
             <h2>Pending Needs</h2>
@@ -297,8 +290,6 @@ const SchoolDashboard = () => {
                     <h3>{need.item}</h3>
                     <p className="need-quantity">Required: {need.quantity} | Received: {need.fulfilled || 0}</p>
                     {getUrgencyBadge(need.urgency, need.autoUpdated)}
-                    
-                    {/* Progress Bar */}
                     <div className="progress-bar-container">
                       <div 
                         className="progress-fill-need"
@@ -324,7 +315,6 @@ const SchoolDashboard = () => {
           </div>
         </div>
 
-        {/* Recent Messages */}
         <div className="dashboard-card full-width">
           <div className="card-header">
             <h2>Recent Messages</h2>
@@ -357,7 +347,6 @@ const SchoolDashboard = () => {
         </div>
       </div>
 
-      {/* Notification Toast */}
       {showToast && (
         <NotificationToast 
           notifications={notifications.filter(n => !n.read)}
